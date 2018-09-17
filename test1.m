@@ -37,12 +37,12 @@ q(4);
 (-2 * q(1) * q(3) * q(4)) / (q(1) * q(1) + q(2) * q(2) + 1);
 ];
 
-t = [0: 0.01: 5.2];
+t = [0: 5.2 / 100: 5.2 - 5.2 / 100];
 [t, qa] = ode45(f, t, q0);
-u = qa(:, 1);
-v = qa(:, 2);
+u_octave = qa(:, 1);
+v_octave = qa(:, 2);
 
-plot3(u, v, u .* v, '-r', 'lineWidth', 1);
+plot3(u_octave, v_octave, u_octave .* v_octave, '-r', 'lineWidth', 1);
 % ------------------------
 
 colormap(jet(256));
@@ -51,3 +51,13 @@ surf(X, Y, X .* Y);
 shading interp;
 
 
+error = 100 * abs(u_octave - u);
+sum(error) / 100
+error2 = 100 * abs(v_octave - v);
+sum(error2) / 100
+
+% (valor real -  estimado) / valor real
+error = 100 * abs(u_octave - u) ./ abs(u_octave);
+sum(error) / 100
+error2 = 100 * abs(v_octave - v) ./ abs(v_octave);
+sum(error2) / 100
